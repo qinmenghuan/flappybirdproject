@@ -274,7 +274,11 @@ function onpress(evt) {
 
 // 初始化方法
 function main() {
+  // debugger;
   canvas=document.getElementById("gamemain");
+  if(!canvas){
+    return;
+  }
   width=window.innerWidth;
   height=window.innerHeight;
 

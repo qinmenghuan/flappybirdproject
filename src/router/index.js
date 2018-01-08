@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld';
-import GameHomeCom from '@/components/gameHome/GameHomeCom'
+import GameHomeCom from '@/components/gameHome/GameHomeCom';
+import Login from '@/components/login/LoginCom';
 
 Vue.use(Router)
 
@@ -17,6 +18,11 @@ export default new Router({
       path: '/',
       name: 'GameHome',
       component: GameHomeCom
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     }
   ]
 })

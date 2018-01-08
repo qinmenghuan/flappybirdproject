@@ -1,0 +1,49 @@
+@charset "utf-8";
+
+#loginPage{
+  text-align: center;
+  background-color: $login_bg;
+  img{
+    @include px2rem(margin-top, 50px);
+    @include px2rem(width, 200px);
+  }
+  .baseForm{
+    @include px2rem(margin-top, 100px);
+    .formline{
+      position: relative;
+      @include px2rem(margin-bottom, 60px);
+      i{
+        position: absolute;
+        @include px2rem(left, 82px);
+        @include font-dpr(50px);
+        @include px2rem(top, 18px);
+        color:#999;
+      }
+      .password{
+        @include font-dpr(46px);
+        @include px2rem(margin-left, 5px);
+      }
+      input{
+        @include font-dpr(35px);
+        border: 1px solid white;
+        @include border-radius-dpr(10px);
+        color: white;
+        background-color: $login_bg;
+        @include px2rem(padding-left, 30px);
+        @include px2rem(width, 620px);
+        @include px2rem(height, 110px);
+      }
+    }
+  }
+  button{
+    @include font-dpr(35px);
+    @include px2rem(width, 650px);
+    @include px2rem(height, 110px);
+    border: 1px solid white;
+    @include border-radius-dpr(10px);
+    color: $login_bg;
+    background-color: white;
+    @include font-dpr(35px);
+  }
+}
+
