@@ -274,16 +274,14 @@ function onpress(evt) {
 
 // 初始化方法
 function main() {
-  // console.log("aaastr:",aaastr);
-  // canvas=document.createElement("canvas");
   canvas=document.getElementById("gamemain");
-  console.log("canvas:",canvas);
   width=window.innerWidth;
   height=window.innerHeight;
 
   // 监听事件的类型
   var evt="touchstart";
   if(width>=500){
+
     width=320;
     height=480;
     canvas.style.border="1px solid #000";
@@ -304,12 +302,9 @@ function main() {
   // 添加图片
   var img=new Image();
   img.onload=function () {
-    console.log("onload");
-    // debugger
     // 初始化游戏对象
     initSprites(img);
     // 设置背景颜色
-    console.log("s_bg:",s_bg);
     ctx.fillStyle=s_bg.color;
     //
     okbtn={
@@ -321,7 +316,6 @@ function main() {
     run();
   }
   img.src=require('../../assets/sheet.png');
-    // img.src=require("./static/sheet.png");
 }
 
 // 开始游戏
