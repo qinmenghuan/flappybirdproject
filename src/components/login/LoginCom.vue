@@ -4,7 +4,7 @@
     <form class="baseForm">
       <div class="formline">
         <i class="iconfont icon-wodetubiao-12"></i>
-        <input class="horiControl" type="tel" v-model.trim="phonenum" placeholder="请输入账号" />
+        <input class="horiControl" type="tel" v-model.trim="socketMsg.user" placeholder="请输入账号" />
       </div>
       <div class="formline">
         <i class="iconfont icon-wodetubiao-18 password"></i>

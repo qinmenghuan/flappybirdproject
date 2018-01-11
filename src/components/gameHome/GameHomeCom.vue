@@ -6,6 +6,7 @@
   </div>
 </template>
 
+<script type="es6" src="./home.js"></script>
 <script type="es6" src="./gamehome.js"></script>
 
 <style lang="scss" scoped src="./gamehome.scss"></style>

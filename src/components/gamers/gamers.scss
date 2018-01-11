@@ -1,0 +1,40 @@
+@charset "utf-8";
+
+.userlist{
+  li{
+    border-bottom: 1px solid $li_border_color;
+    height: 80px;
+    position: relative;
+    div{
+      position: absolute;
+      left: 80px;
+      top:20px;
+      right:0;
+      h4{
+        color:$li_font_color;
+        font-size: 1rem;
+      }
+      p{
+        font-size: 0.8rem;
+        color:$li_light_font_color;
+      }
+    }
+    img{
+      margin: 10px;
+      //margin-top:10px;
+      height:60px;
+    }
+
+    button{
+      position: absolute;
+      right: 10px;
+      top:25px;
+      height: 30px;
+      width: 100px;
+      border-radius: 3px;
+      background-color: $li_button_bg_color;
+      color: white;
+    }
+  }
+}
+

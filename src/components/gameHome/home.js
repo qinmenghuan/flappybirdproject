@@ -3,6 +3,10 @@
  * Created by qinmenghuan on 2017-08-25.
  */
 
+function gameinit() {
+
+
+
 var
   aaastr="aaa",
   s_bird,
@@ -17,6 +21,7 @@ var
   s_numberS,
   s_numberB;
 
+console.log("load home js");
 
 function Sprite(img, x, y, width, height) {
   this.img = img;
@@ -239,9 +244,9 @@ var
 
 
 // 加载完后执行 初始化方法
-window.onload=function () {
+// window.onload=function () {
   main();
-}
+// }
 
 
 // 点击事件
@@ -274,11 +279,12 @@ function onpress(evt) {
 
 // 初始化方法
 function main() {
+  console.log("main");
   // debugger;
   canvas=document.getElementById("gamemain");
-  if(!canvas){
-    return;
-  }
+  // if(!canvas){
+  //   return;
+  // }
   width=window.innerWidth;
   height=window.innerHeight;
 
@@ -389,4 +395,10 @@ function render() {
   }else{
     s_numberB.draw(ctx,null,20,score,width2);
   }
+}
+
+}
+
+module.exports = {
+  gameinit
 }
