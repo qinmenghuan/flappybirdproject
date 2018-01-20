@@ -27,3 +27,10 @@ npm install -D node-sass sass-loader
   3.<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+# import cordova
+1.全局安装node,cordova
+2.npm install cordova,vue-cordova
+3.入口文件引入vue-cordova
+4.dom引入cordova.js标签
+5.
