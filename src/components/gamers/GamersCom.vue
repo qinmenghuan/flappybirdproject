@@ -8,7 +8,7 @@
           <h4>{{item.username}}</h4>
           <p>中国</p>
         </div>
-        <button>加入对战</button>
+        <button @click="inviteUser(item)">邀请对战</button>
       </li>
     </ul>
   </div>
