@@ -4,21 +4,25 @@ import GameHomeCom from '@/components/gameHome/GameHomeCom';
 import Login from '@/components/login/LoginCom';
 import Gamers from '@/components/gamers/GamersCom.vue';
 
+// 五子棋 开始
+import GoBang from '@/page/goBang/goBang.vue';
+// 五子棋 结束
+
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Login',
+      name: 'L',
       component: Login
     },
-    // 游戏123
-    // {
-    //   path: '/',
-    //   name: 'GameHome',
-    //   component: GameHomeCom
-    // },
+    // 五子棋主界面
+    {
+      path: '/goBang',
+      name: 'GoBang',
+      component: GoBang
+    },
     // 登录
     {
       path: '/login',
