@@ -3,12 +3,16 @@
  * Created by qinmenghuan on 2017-08-25.
  */
 
+// 横排多少个棋格
+var cellNumber=10;
+
 export default {
 	name: 'GoBang',
 	data() {
 		return {
       gameCanvas:null,
       gameCtx:null,
+      cellWidth:null
 		}
 	},
 	// 创建后login
@@ -17,39 +21,34 @@ export default {
 	},
   // 面板组件加载后
   mounted(){
-    this.gameCanvas=document.getElementById("gameboard");
-    let width = window.innerWidth;
-    this.gameCanvas.width=width;
-    this.gameCanvas.height=width;
-    this.gameCtx=this.gameCanvas.getContext("2d");
-    // 设置填充背景颜色
-    this.gameCtx.fillStyle="#70C5CF";
-    this.gameCtx.fillRect(0,0,width,width);
-
-    // this.gameCtx.fillStyle = '#ff4200';//fillStyle代表的是填充颜色
-    // this.gameCtx.fillRect(0,0,400,300);//fillRect中第一第二个参数代表的是开始的坐标位置，这里是0，0也就是代表从左上角开始，第三第四个参数代表的是所绘制的图形的宽和高。
-    // this.gameCtx.fillStyle = 'red';
-    // this.gameCtx.strokeStyle = 'blue';//strokeStyle代表的是边框的颜色
-    // this.gameCtx.lineWidth = 2;
-    // this.gameCtx.fillRect(50,50,100,100);//fillRect里的第一、二个参数代表的开始的坐标位置，第三和第四个参数代表的是绘制图形的宽高。
-    // this.gameCtx.strokeRect(50,50,100,100);
-    //context.clearRect(50,50,100,100);//clearRect()方法实现的是让选定的区域的填充色变为透明。。
-
-
+    this.init();
   },
 	methods: {
     // 初始化
     init(){
-      let gameCanvas=document.getElementById("gameboard");
-      // let height=window.innerHeight;
-      let width = window.innerWidth;
-      // gameCanvas.width=width;
-      // gameCanvas.height =width;th=width;
-      // gameCanvas.height =width;
-      // gameCanvas.width=width;
-      // gameCanvas.height=width;
+      this.gameCanvas=document.getElementById("gameboard");
+      let width = window.innerWidth-40;
+      this.gameCanvas.width=width;
+      this.gameCanvas.height=width;
+      this.gameCtx=this.gameCanvas.getContext("2d");
+      // 设置填充背景颜色
+      this.gameCtx.fillStyle="#ffe198";
+      this.gameCtx.fillRect(0,0,width,width);
 
-
+      // 初始化网格
+      this.cellWidth=width/cellNumber;
+      this.gameCtx.lineWidth = 1;
+      this.gameCtx.strokeStyle = '#532d06';
+      // 循环遍历网格
+      for(let i=0;i<cellNumber;i++){
+        // 横向线
+        this.gameCtx.moveTo(0,i*this.cellWidth);
+        this.gameCtx.lineTo(width,i*this.cellWidth);
+        // 纵向线
+        this.gameCtx.moveTo(i*this.cellWidth,0);
+        this.gameCtx.lineTo(i*this.cellWidth,width);
+      }
+      this.gameCtx.stroke();
     },
 		// 登录
 		login: function(event) {
