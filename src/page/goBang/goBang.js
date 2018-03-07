@@ -33,8 +33,29 @@ export default {
       this.gameCanvas.height=boardWidth;
       this.gameCtx=this.gameCanvas.getContext("2d");
 
+      // 加载图片资源
+      var pieceImg=new Image();
+      pieceImg.onload=function () {
+        // 初始化游戏对象
+        initSprites(img);
+        // 设置背景颜色
+        ctx.fillStyle=s_bg.color;
+        //
+        okbtn={
+          x:(width-s_buttons.Ok.width)/2,
+          y:height-200,
+          width:s_buttons.Ok.width,
+          height:s_buttons.Ok.height
+        };
+        run();
+      }
+      pieceImg.src=require('../../assets/piece_white.png');
+
       // 渲染界面
       this.renderGame();
+    },
+    runGame(){
+
     },
     // 渲染页面
     renderGame(){
@@ -56,6 +77,8 @@ export default {
         this.gameCtx.lineTo(i*this.cellWidth,boardWidth);
       }
       this.gameCtx.stroke();
+
+
     },
 		// 登录
 		login: function(event) {
