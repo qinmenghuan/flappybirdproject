@@ -3,8 +3,8 @@
  * Created by qinmenghuan on 2017-08-25.
  */
 
-// 横排多少个棋格
-var cellNumber=10;
+var cellNumber=10;// 横排多少个棋格
+var boardWidth=0; //游戏
 
 export default {
 	name: 'GoBang',
@@ -12,7 +12,8 @@ export default {
 		return {
       gameCanvas:null,
       gameCtx:null,
-      cellWidth:null
+      cellWidth:null,
+      boardWidth:0
 		}
 	},
 	// 创建后login
@@ -27,26 +28,32 @@ export default {
     // 初始化
     init(){
       this.gameCanvas=document.getElementById("gameboard");
-      let width = window.innerWidth-40;
-      this.gameCanvas.width=width;
-      this.gameCanvas.height=width;
+      boardWidth = window.innerWidth-40;
+      this.gameCanvas.width=boardWidth;
+      this.gameCanvas.height=boardWidth;
       this.gameCtx=this.gameCanvas.getContext("2d");
+
+      // 渲染界面
+      this.renderGame();
+    },
+    // 渲染页面
+    renderGame(){
       // 设置填充背景颜色
       this.gameCtx.fillStyle="#ffe198";
-      this.gameCtx.fillRect(0,0,width,width);
+      this.gameCtx.fillRect(0,0,boardWidth,boardWidth);
 
       // 初始化网格
-      this.cellWidth=width/cellNumber;
+      this.cellWidth=boardWidth/cellNumber;
       this.gameCtx.lineWidth = 1;
       this.gameCtx.strokeStyle = '#532d06';
       // 循环遍历网格
       for(let i=0;i<cellNumber;i++){
         // 横向线
         this.gameCtx.moveTo(0,i*this.cellWidth);
-        this.gameCtx.lineTo(width,i*this.cellWidth);
+        this.gameCtx.lineTo(boardWidth,i*this.cellWidth);
         // 纵向线
         this.gameCtx.moveTo(i*this.cellWidth,0);
-        this.gameCtx.lineTo(i*this.cellWidth,width);
+        this.gameCtx.lineTo(i*this.cellWidth,boardWidth);
       }
       this.gameCtx.stroke();
     },
