@@ -11,7 +11,10 @@ var pieceImg_white,
   cellWidth,
   boardMargin=25,
   colorIsBlack=true,
-  pieceIndexList=[];
+  pieceMargin,// 可落子区域边距
+  boardPieceState={},
+  five=5
+  ;
 
 
 export default {
@@ -33,7 +36,7 @@ export default {
     init(){
       let self=this;
       self.gameCanvas=document.getElementById("gameboard");
-      boardWidth = window.innerWidth-40;
+      boardWidth = window.innerWidth;
       this.gameCanvas.width=boardWidth;
       this.gameCanvas.height=boardWidth;
       this.gameCtx=this.gameCanvas.getContext("2d");
@@ -84,19 +87,52 @@ export default {
         mx=evt.touches[0].clientX;
         my=evt.touches[0].clientY;
       }
-      console.log("mx:",mx,"my:",my);
+      // console.log("mx:",mx,"my:",my);
       // 校验落子在棋盘外
+      if(mx<pieceMargin||mx>(boardWidth-boardMargin+cellWidth/2)
+          ||my<pieceMargin||my>(boardWidth-boardMargin+cellWidth/2)){
+        return;
+      }
       // 落子
-      let pieceMargin=boardMargin-cellWidth/2;
+      pieceMargin=boardMargin-cellWidth/2;
       let xCellIndex=parseInt((mx-pieceMargin)/cellWidth);
       let yCellIndex=parseInt((my-pieceMargin)/cellWidth);
-      // 校验
+      // 校验重复落子
+      let newIndexKey=xCellIndex+"-"+yCellIndex;
+      if(boardPieceState.hasOwnProperty(newIndexKey)){
+        return;
+      }
 
-      pieceIndexList.push({xCellIndex:xCellIndex,yCellIndex:yCellIndex});
+      boardPieceState[xCellIndex+"-"+yCellIndex]=colorIsBlack;
+      let currentPiece={xCellIndex:xCellIndex,yCellIndex:yCellIndex,isBlack:colorIsBlack};
       let pieceWidth=cellWidth;// 棋子宽度
       let pieceImage=colorIsBlack?pieceImg_black:pieceImg_white;
       this.gameCtx.drawImage(pieceImage,pieceMargin+xCellIndex*cellWidth,pieceMargin+yCellIndex*cellWidth,pieceWidth,pieceWidth);
+      // 判断输赢
+      this.checkWin(currentPiece);
+
+      // 改变颜色
       colorIsBlack=!colorIsBlack;
+    },
+    // 判断输赢
+    checkWin(currentPiece){
+      // 横向判断
+      let horizontalNum=1;
+
+      // 右
+      if(currentPiece.xCellIndex<cellNumber){
+        for(let i=1;i<=Math.min(five-1,(cellNumber-currentPiece.xCellIndex));i++){
+          let indexKey=(currentPiece.xCellIndex+i)+"-"+currentPiece.yCellIndex;
+          if(boardPieceState[indexKey]){
+            if(boardPieceState[indexKey]==currentPiece.isBlack){
+
+            }
+          }else{
+            break;
+          }
+        }
+      }
+
     },
 		// 登录
 		login: function(event) {
