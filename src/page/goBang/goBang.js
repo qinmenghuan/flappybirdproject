@@ -13,9 +13,14 @@ var pieceImg_white,
   colorIsBlack=true,
   pieceMargin,// 可落子区域边距
   boardPieceState={},
-  five=5
+  five=5,
+  // gameStatus={
+  //   Ready:0,	// 准备游戏
+  //   Game:1,		// 游戏中
+  //   Over:2		// 游戏结束
+  // }
+  gameStatus=1
   ;
-
 
 export default {
 	name: 'GoBang',
@@ -40,6 +45,7 @@ export default {
       this.gameCanvas.width=boardWidth;
       this.gameCanvas.height=boardWidth;
       this.gameCtx=this.gameCanvas.getContext("2d");
+      gameStatus=1; // 游戏状态初始化
 
       // 加载图片资源
       pieceImg_white=new Image();
@@ -81,6 +87,11 @@ export default {
     },
     // 触摸事件
     touchOnpress(evt){
+      // 游戏状态校验
+      if(gameStatus==2){
+        return;
+      }
+
       var mx=evt.offsetX,my=evt.offsetY;
       // 兼容手机端
       if(mx==null||my==null){
@@ -117,21 +128,151 @@ export default {
     // 判断输赢
     checkWin(currentPiece){
       // 横向判断
-      let horizontalNum=1;
+      let horizontalNum=1,verticalNum=1,leftUpSlopNum=1,rightUpSlopNum=1;
+      let rightEnable=true,leftEnable=true,
+        upEnable=true,downEnable=true,
+        leftUpEnable=true,rightDownEnable=true,
+        rightUpEnable=true,leftDownEnable=true;
 
-      // 右
-      if(currentPiece.xCellIndex<cellNumber){
-        for(let i=1;i<=Math.min(five-1,(cellNumber-currentPiece.xCellIndex));i++){
+      for(let i=1;i<five;i++){
+
+        let yCellIndexPlusI= currentPiece.yCellIndex+i;
+        let yCellIndexSubI= currentPiece.yCellIndex-i;
+        let xCellIndexPlusI= currentPiece.xCellIndex+i;
+        let xCellIndexSubI= currentPiece.xCellIndex-i;
+
+        // 右
+        if(rightEnable&&(currentPiece.xCellIndex+i)<=cellNumber){
           let indexKey=(currentPiece.xCellIndex+i)+"-"+currentPiece.yCellIndex;
-          if(boardPieceState[indexKey]){
-            if(boardPieceState[indexKey]==currentPiece.isBlack){
-
-            }
+          let state= boardPieceState[indexKey];
+          if(state&&state==currentPiece.isBlack){
+              horizontalNum++;
           }else{
-            break;
+            rightEnable=false;
+          }
+        }else{
+          rightEnable=false;
+        }
+
+        // 左
+        if(leftEnable&&(currentPiece.xCellIndex-i)>=0){
+          let indexKey=(currentPiece.xCellIndex-i)+"-"+currentPiece.yCellIndex;
+          let state= boardPieceState[indexKey];
+          if(state&&state==currentPiece.isBlack){
+            horizontalNum++;
+          }else{
+            leftEnable=false;
           }
         }
+
+        // 判断水平
+        if(horizontalNum==five){
+          alert("结束");
+          gameStatus=2;
+          return;
+        }
+
+        // 下
+        if(downEnable&&(currentPiece.yCellIndex+i)<=cellNumber){
+          let indexKey = currentPiece.xCellIndex+"-"+(currentPiece.yCellIndex+i);
+          let state= boardPieceState[indexKey];
+          if(state&&state==currentPiece.isBlack){
+            verticalNum++;
+          }else{
+            downEnable=false;
+          }
+        }else{
+          downEnable=false;
+        }
+
+        // 上
+        if(upEnable&&(currentPiece.yCellIndex-i)>=0){
+          let indexKey = currentPiece.xCellIndex+"-"+(currentPiece.yCellIndex-i);
+          let state= boardPieceState[indexKey];
+          if(state&&state==currentPiece.isBlack){
+            verticalNum++;
+          }else{
+            upEnable=false;
+          }
+        }else{
+          upEnable=false;
+        }
+
+        // 判断水平
+        if(verticalNum==five){
+          alert("水平结束");
+          gameStatus=2;
+          return;
+        }
+
+        // 右下
+        if(rightDownEnable&&yCellIndexPlusI<=cellNumber&&xCellIndexPlusI<=cellNumber){
+          let indexKey = xCellIndexPlusI+"-"+yCellIndexPlusI;
+          let state= boardPieceState[indexKey];
+          if(state&&state==currentPiece.isBlack){
+            leftUpSlopNum++;
+          }else{
+            rightDownEnable=false;
+          }
+        }else{
+          rightDownEnable=false;
+        }
+
+        // 左上
+        if(leftUpEnable&&yCellIndexSubI>=0&&xCellIndexSubI>=0){
+          let indexKey = xCellIndexSubI+"-"+yCellIndexSubI;
+          let state= boardPieceState[indexKey];
+          if(state&&state==currentPiece.isBlack){
+            leftUpSlopNum++;
+          }else{
+            leftUpEnable=false;
+          }
+        }else{
+          leftUpEnable=false;
+        }
+
+        // 判断左上斜线
+        if(leftUpSlopNum==five){
+          alert("左上结束");
+          gameStatus=2;
+          return;
+        }
+
+        // 右上
+        if(rightUpEnable&&yCellIndexSubI>=0&&xCellIndexPlusI<=cellNumber){
+          let indexKey = xCellIndexPlusI+"-"+yCellIndexSubI;
+          let state= boardPieceState[indexKey];
+          if(state&&state==currentPiece.isBlack){
+            rightUpSlopNum++;
+          }else{
+            rightUpEnable=false;
+          }
+        }else{
+          rightUpEnable=false;
+        }
+
+        // 左下
+        if(leftDownEnable&&xCellIndexSubI>=0&&yCellIndexPlusI<=cellNumber){
+          let indexKey = xCellIndexSubI+"-"+yCellIndexPlusI;
+          let state= boardPieceState[indexKey];
+          if(state&&state==currentPiece.isBlack){
+            rightUpSlopNum++;
+          }else{
+            leftDownEnable=false;
+          }
+        }else{
+          leftDownEnable=false;
+        }
+
+        // 判断左上斜线
+        if(rightUpSlopNum==five){
+          alert("右上结束");
+          gameStatus=2;
+          return;
+        }
+
       }
+
 
     },
 		// 登录
