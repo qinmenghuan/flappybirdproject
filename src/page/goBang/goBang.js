@@ -85,7 +85,7 @@ export default {
 				console.log("gameloginmessage", evt.data);
 				// debugger;
 				let gameObj = JSON.parse(evt.data);
-				if (gameObj.type = "gaming") {
+				if (gameObj.type == "gaming") {
 					let gameStep = gameObj["msgobj"];
 					let pieceImage = colorIsBlack ? pieceImg_black : pieceImg_white;
 					pieceMargin = boardMargin - cellWidth / 2;
@@ -98,13 +98,17 @@ export default {
 
 					// 改变颜色
 					colorIsBlack = !colorIsBlack;
-				} else if (gameObj.type = "GameOver") {
+				} else if (gameObj.type == "GameOver") {
 					let gameStep = gameObj["msgobj"];
 					let pieceImage = colorIsBlack ? pieceImg_black : pieceImg_white;
 					pieceMargin = boardMargin - cellWidth / 2;
 					self.gameCtx.drawImage(pieceImage, pieceMargin + gameStep.xCellIndex * cellWidth, pieceMargin + gameStep.yCellIndex * cellWidth, cellWidth, cellWidth);
 					// 判断输赢
-					self.checkWin(gameStep);
+					if (Helpers.userIsBlack()) {
+						gameStatus = 2;
+					} else {
+						gameStatus = 3;
+					}
 				}
 			}
 			gameWebSocket.onclose = function () {
@@ -139,6 +143,7 @@ export default {
 		},
 		// 触摸事件
 		touchOnpress(evt) {
+			// debugger
 			// 游戏状态校验
 			if (gameStatus >= 2||gameStatus==0) {
 				return;
@@ -177,7 +182,9 @@ export default {
 			this.playChess(currentPiece);
 
 			// 更新游戏状态
-			gameStatus=0;
+			if(gameStatus==1){
+				gameStatus=0;
+			}
 
 			// 改变颜色
 			colorIsBlack = !colorIsBlack;
@@ -348,10 +355,7 @@ export default {
 					gameStatus = currentPiece.isBlack ? 2 : 3;
 					return;
 				}
-
 			}
-
-
 		},
 		// 登录
 		login: function (event) {
