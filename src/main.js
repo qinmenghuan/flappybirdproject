@@ -5,7 +5,9 @@ import App from './App'
 import router from './router';
 // import 'lib-flexible/flexible.js'
 import 'mint-ui/lib/style.min.css';
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+import SocketPlugin from './common/webSocket.js';
+Vue.use(SocketPlugin);
 
 /* eslint-disable no-new */
 new Vue({
