@@ -21,5 +21,32 @@ export default {
 		} else {
 			return null;
 		}
+	},
+	// 获取当前游戏棋局信息
+	getGameInfo(){
+		let gameInfoStr = localStorage.getItem("gameInfo");
+		let gameInfo = null;
+		if (gameInfoStr) {
+			gameInfo = JSON.parse(gameInfoStr);
+		}
+		return  gameInfo;
+	},
+	// 当前用户是否是邀请方
+	userIsBlack(){
+		let userInfoStr = localStorage.getItem('currentUser');
+		let userInfo=null;
+		if(userInfoStr ) {
+			userInfo= JSON.parse(userInfoStr);
+		}
+
+		let gameInfoStr = localStorage.getItem("gameInfo");
+		let gameInfo = null;
+		if (gameInfoStr) {
+			gameInfo = JSON.parse(gameInfoStr);
+		}
+
+		let isBlack = false;
+		isBlack = userInfo.username == gameInfo.aUsername;
+		return isBlack;
 	}
 };

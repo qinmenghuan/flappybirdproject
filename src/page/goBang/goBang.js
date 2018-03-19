@@ -16,8 +16,8 @@ var pieceImg_white,
 	pieceMargin,// 可落子区域边距
 	boardPieceState = {},
 	five = 5,
-	gameStatus = 1 ,   // 0 准备   1 游戏中   2 结束游戏
-	gameWebSocket=null     // 游戏websocket
+	gameStatus = 1,   // 0 准备,不能下棋   1 游戏中   2 结束游戏
+	gameWebSocket = null     // 游戏websocket
 ;
 
 export default {
@@ -27,7 +27,7 @@ export default {
 			gameCanvas: null,
 			gameCtx: null,
 			boardWidth: 0,
-			gameSocket:null
+			gameSocket: null
 		}
 	},
 
@@ -44,7 +44,12 @@ export default {
 			this.gameCanvas.width = boardWidth;
 			this.gameCanvas.height = boardWidth;
 			this.gameCtx = this.gameCanvas.getContext("2d");
-			gameStatus = 1; // 游戏状态初始化
+			// 初始化游戏状态
+			if (Helpers.userIsBlack()) {
+				gameStatus = 1;
+			} else {
+				gameStatus = 0;
+			}
 
 			// 加载图片资源
 			pieceImg_white = new Image();
@@ -65,38 +70,42 @@ export default {
 		runGame() {
 		},
 		// 连接游戏服务器
-		connectSocket(){
-			let self=this;
+		connectSocket() {
+			let self = this;
 			// 游戏socket
 			gameWebSocket = new WebSocket('ws://localhost:9876/game');
 			gameWebSocket.onopen = function () {
 				console.log("opengame");
 				// 初始化websocket
 				let userinfo = Helpers.getUserInfo();
-				let wsobj = {type: 'init',username:userinfo.username};
+				let wsobj = {type: 'init', username: userinfo.username};
 				gameWebSocket.send(JSON.stringify(wsobj));
 			}
 			gameWebSocket.onmessage = function (evt) {
-				console.log("gameloginmessage",evt.data);
+				console.log("gameloginmessage", evt.data);
 				// debugger;
 				let gameObj = JSON.parse(evt.data);
-				if(gameObj.type="gaming"){
-					let gameStep=gameObj["msgobj"];
+				if (gameObj.type = "gaming") {
+					let gameStep = gameObj["msgobj"];
 					let pieceImage = colorIsBlack ? pieceImg_black : pieceImg_white;
 					pieceMargin = boardMargin - cellWidth / 2;
 					self.gameCtx.drawImage(pieceImage, pieceMargin + gameStep.xCellIndex * cellWidth, pieceMargin + gameStep.yCellIndex * cellWidth, cellWidth, cellWidth);
 					// 判断输赢
 					self.checkWin(gameStep);
 
+					// 更新游戏状态
+					gameStatus=1;
+
 					// 改变颜色
 					colorIsBlack = !colorIsBlack;
+				} else if (gameObj.type = "GameOver") {
+					let gameStep = gameObj["msgobj"];
+					let pieceImage = colorIsBlack ? pieceImg_black : pieceImg_white;
+					pieceMargin = boardMargin - cellWidth / 2;
+					self.gameCtx.drawImage(pieceImage, pieceMargin + gameStep.xCellIndex * cellWidth, pieceMargin + gameStep.yCellIndex * cellWidth, cellWidth, cellWidth);
+					// 判断输赢
+					self.checkWin(gameStep);
 				}
-
-				// if (evt.data) {
-				// 	// this.route.push("");123
-				// 	console.log("gamers:", evt.data);
-				// 	// self.userList = JSON.parse(evt.data);
-				// }
 			}
 			gameWebSocket.onclose = function () {
 				console.log("客户端断开");
@@ -131,7 +140,7 @@ export default {
 		// 触摸事件
 		touchOnpress(evt) {
 			// 游戏状态校验
-			if (gameStatus == 2) {
+			if (gameStatus >= 2||gameStatus==0) {
 				return;
 			}
 
@@ -167,26 +176,29 @@ export default {
 			// 发送socket请求
 			this.playChess(currentPiece);
 
+			// 更新游戏状态
+			gameStatus=0;
+
 			// 改变颜色
 			colorIsBlack = !colorIsBlack;
 		},
 		// 下棋
-		playChess(currentPiece){
-			// debugger;
-			let gameInfoStr = localStorage.getItem("gameInfo");
+		playChess(currentPiece) {
 			let userinfo = Helpers.getUserInfo();
-			let gameInfo=null;
-			if(gameInfoStr){
-				gameInfo=JSON.parse(gameInfoStr);
-			}
-			let opponentName="";
-			if(userinfo){
+			let gameInfo = Helpers.getGameInfo();
+			let opponentName = "";
+			opponentName = userinfo.username == gameInfo.aUsername ? gameInfo.bUsername : gameInfo.aUsername;
+			currentPiece["opponentName"] = opponentName;
+			currentPiece["gameIndex"] = gameInfo.gameIndex;
 
+			// 如果游戏结束
+			let params = {};
+			if (gameStatus >= 2) {
+				currentPiece["gameStatus"] = gameStatus;
+				params = {type: "GameOver", msgobj: currentPiece};
+			} else {
+				params = {type: "gaming", msgobj: currentPiece};
 			}
-			opponentName=  userinfo.username==gameInfo.aUsername?gameInfo.bUsername:gameInfo.aUsername;
-
-			currentPiece["opponentName"]=opponentName;
-			let params = {type: "gaming", msgobj: currentPiece};
 
 			// 发送请求
 			gameWebSocket.send(JSON.stringify(params));
@@ -234,7 +246,7 @@ export default {
 				// 判断水平
 				if (horizontalNum == five) {
 					alert("结束");
-					gameStatus = 2;
+					gameStatus = currentPiece.isBlack ? 2 : 3;
 					return;
 				}
 
@@ -267,7 +279,7 @@ export default {
 				// 判断水平
 				if (verticalNum == five) {
 					alert("水平结束");
-					gameStatus = 2;
+					gameStatus = currentPiece.isBlack ? 2 : 3;
 					return;
 				}
 
@@ -300,7 +312,7 @@ export default {
 				// 判断左上斜线
 				if (leftUpSlopNum == five) {
 					alert("左上结束");
-					gameStatus = 2;
+					gameStatus = currentPiece.isBlack ? 2 : 3;
 					return;
 				}
 
@@ -333,7 +345,7 @@ export default {
 				// 判断左上斜线
 				if (rightUpSlopNum == five) {
 					alert("右上结束");
-					gameStatus = 2;
+					gameStatus = currentPiece.isBlack ? 2 : 3;
 					return;
 				}
 
