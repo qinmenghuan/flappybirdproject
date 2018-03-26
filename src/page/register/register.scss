@@ -1,16 +1,15 @@
 @charset "utf-8";
 
-#loginPage {
-	text-align: center;
+#registerPage{
 	background-color: $login_bg;
 	height: 100%;
+}
+
+.registerBody {
+	text-align: center;
 	margin: 0 ;
 	padding: 0;
 	overflow: hidden;
-	img {
-		//margin-top: 50px;
-		width: 80px;
-	}
 	h2{
 		margin-top: 50px;
 		@include font-dpr(60px);
@@ -34,7 +33,7 @@
 			}
 			input {
 				font-size: 1rem;
-				border: 1px solid $form_border_color;
+				border: 1px solid $button_bg_color;
 				color: $form_font_color;
 				background-color: $login_bg;
 				border-radius: 5px;
@@ -42,7 +41,7 @@
 				width: 300px;
 				height: 50px;
 				&::-webkit-input-placeholder {
-					color: #cce0de;
+					color: #dedfe0;
 				}
 			}
 		}
@@ -57,29 +56,5 @@
 		color: white;
 		background-color: $button_bg_color;
 	}
-	.routerBtn{
-		width: 315px;
-		display: flex;
-		display:inline-block;
-		margin-top: 20px;
-		.flexdiv{
-			display: flex;
-			div{
-				flex: 1;
-			}
-			.alignLeft{
-				text-align: left;
-			}
-			.alignRight{
-				text-align: right;
-			}
-			button,a{
-				font-size: 1rem;
-				color: $button_bg_color;
-				background: none;
-			}
-		}
-	}
-
 }
 

@@ -5,6 +5,8 @@ import App from './App'
 import router from './router';
 // import 'lib-flexible/flexible.js'
 import 'mint-ui/lib/style.min.css';
+import Mint from'mint-ui';
+Vue.use(Mint);
 Vue.config.productionTip = false;
 import SocketPlugin from './common/webSocket.js';
 Vue.use(SocketPlugin);

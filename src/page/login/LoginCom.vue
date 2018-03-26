@@ -19,7 +19,8 @@
                     <button>忘记密码</button>
                 </div>
                 <div class="alignRight">
-                    <button>注册</button>
+                    <router-link to="/register" slot="left">注册
+                    </router-link>
                 </div>
             </div>
 
