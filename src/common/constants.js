@@ -7,7 +7,8 @@
 var domain = "ws://localhost:9876/";
 
 export default {
-	baseDomain: domain
+	baseDomain: domain,
+	gameName:"FunnyGo"
 }
 
 

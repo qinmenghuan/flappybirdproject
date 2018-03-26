@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import GameHomeCom from '@/components/gameHome/GameHomeCom';
-import Login from '@/components/login/LoginCom';
+import Login from '@/page/login/LoginCom';
 import Gamers from '@/components/gamers/GamersCom.vue';
 
 // 五子棋 开始

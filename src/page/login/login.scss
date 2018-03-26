@@ -1,0 +1,85 @@
+@charset "utf-8";
+
+#loginPage {
+	text-align: center;
+	background-color: $login_bg;
+	height: 100%;
+	margin: 0 ;
+	padding: 0;
+	overflow: hidden;
+	img {
+		//margin-top: 50px;
+		width: 80px;
+	}
+	h2{
+		margin-top: 50px;
+		@include font-dpr(60px);
+		color: white;
+	}
+	.baseForm {
+		margin-top: 50px;
+		.formline {
+			position: relative;
+			@include px2rem(margin-bottom, 60px);
+			i {
+				position: absolute;
+				@include px2rem(left, 82px);
+				@include font-dpr(50px);
+				@include px2rem(top, 18px);
+				color: #999;
+			}
+			.password {
+				@include font-dpr(46px);
+				@include px2rem(margin-left, 5px);
+			}
+			input {
+				font-size: 1rem;
+				border: 1px solid white;
+				color: white;
+				background-color: $login_bg;
+				border-radius: 5px;
+				padding-left: 15px;
+				width: 300px;
+				height: 50px;
+				&::-webkit-input-placeholder {
+					color: #dedfe0;
+				}
+			}
+		}
+	}
+	.baseLongBtn {
+		margin-top: 20px;
+		font-size: 1rem;
+		width: 315px;
+		height: 50px;
+		border: 1px solid white;
+		border-radius: 5px;
+		color: $login_bg;
+		background-color: white;
+	}
+	.routerBtn{
+		width: 315px;
+		display: flex;
+		display:inline-block;
+		margin-top: 20px;
+		.flexdiv{
+			display: flex;
+			div{
+				flex: 1;
+			}
+			.alignLeft{
+				text-align: left;
+			}
+			.alignRight{
+				text-align: right;
+			}
+			button{
+				font-size: 1rem;
+				color: white;
+				background: none;
+			}
+		}
+	}
+
+}
+

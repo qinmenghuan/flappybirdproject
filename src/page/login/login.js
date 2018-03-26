@@ -2,16 +2,19 @@
  * 登录
  * Created by qinmenghuan on 2017-08-25.
  */
+
 // import 'lib-flexible/flexible.js'
 // import Vue from 'vue'
 // import SocketPlugin from '../../common/webSocket.js';
 // Vue.use(SocketPlugin);
+import constants from '../../common/constants.js';
 
 export default {
 	name: 'LoginCom',
 	data() {
 		return {
-			logoUrl: require('../../assets/bird.png'),
+			logoUrl: require('../../assets/wuziqi.jpg'),
+			gameName:constants.gameName,
 			socketMsg: {
 				type: "Login",
 				msg: "login request",
