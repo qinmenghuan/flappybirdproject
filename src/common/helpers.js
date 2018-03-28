@@ -48,5 +48,14 @@ export default {
 		let isBlack = false;
 		isBlack = userInfo.username == gameInfo.aUsername;
 		return isBlack;
+	},
+	// 校验手机号12
+	checkPhone(phone){
+		return /^1[345678]\d{9}$/.test(phone)
+	},
+	// 校验密码
+	checkPassword(pwd){
+		let flag=/^[\w]{6,16}$/.test(pwd)
+		return flag;
 	}
 };

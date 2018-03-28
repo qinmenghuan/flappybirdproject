@@ -4,25 +4,24 @@
             <router-link to="/" slot="left">
                 <mt-button icon="back"></mt-button>
             </router-link>
-            <!--<mt-button icon="more" slot="right"></mt-button>-->
         </mt-header>
         <div class="registerBody">
             <h2>{{gameName}}</h2>
             <form class="baseForm">
                 <div class="formline">
                     <i class="iconfont icon-wodetubiao-12"></i>
-                    <input class="horiControl" type="tel" v-model.trim="socketMsg.user" placeholder="请输入账号"/>
+                    <input class="horiControl" type="tel" v-model.trim="registerObj.telephone" placeholder="请输入手机号"/>
                 </div>
                 <div class="formline">
                     <i class="iconfont icon-wodetubiao-18 password"></i>
-                    <input type="password" class="horiControl" placeholder="请输入密码"/>
+                    <input type="password" class="horiControl" v-model.trim="registerObj.pwd" placeholder="请输入密码"/>
                 </div>
                 <div class="formline">
                     <i class="iconfont icon-wodetubiao-18 password"></i>
-                    <input type="password" class="horiControl" placeholder="请再次输入密码"/>
+                    <input type="password" class="horiControl" v-model.trim="registerObj.repwd" placeholder="请再次输入密码"/>
                 </div>
             </form>
-            <button @click="login()" class="baseLongBtn" id="loginBtn">注册</button>
+            <button @click="register()" class="baseLongBtn" id="loginBtn">注册</button>
         </div>
 
     </div>

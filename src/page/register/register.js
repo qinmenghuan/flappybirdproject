@@ -4,59 +4,64 @@
  */
 
 import constants from '../../common/constants.js';
-import {Header} from "mint-ui";
+import {Toast, Indicator, MessageBox} from "mint-ui";
+import helpers from "../../common/helpers.js";
+import httpRequest from "../../common/ajax.js";
 
 export default {
 	name: 'RegisterCom',
-	components:{
-		Header
+	components: {
+		// Header
 	},
-	//12
+	// data
 	data() {
 		return {
-			logoUrl: require('../../assets/wuziqi.jpg'),
-			gameName:constants.gameName,
-			socketMsg: {
-				type: "Login",
-				msg: "login request",
-				group: "",
-				user: ""
+			gameName: constants.gameName,
+			registerObj: {
+				telephone: "",
+				pwd: "",
+				repwd: ""
 			}
 		}
 	},
 	// 创建后login
 	created() {
-		console.log("value:",this.$myAddedProperty);
-		console.log("value2:",this.$myAddedMethod());
-		this.$myModifyMethod();
-		this.$myAddedProperty="2";
-
-		var self = this;
-		// 登录
-		window.websockObj = new WebSocket('ws://localhost:9876/gamelogin');
-		window.websockObj.onopen = function () {
-			// console.log("open123");
-		}
-		window.websockObj.onmessage = function (evt) {
-			if (evt.data) {
-				// 保存登录人信息
-				localStorage.setItem("currentUser", evt.data);
-				self.$router.replace("/gamers");
-			}
-			console.log("loginmessage:", evt);
-		}
-		window.websockObj.onclose = function () {
-			console.log("客户端断开");
-		};
-		window.websockObj.onerror = function (evt) {
-			console.log("报错");
-		};
 	},
 	methods: {
-		// 登录
-		login: function (event) {
-			console.log("startlogin");
-			window.websockObj.send(JSON.stringify(this.socketMsg));
+		// 注册
+		register: function (event) {
+
+			// 校验手机号
+			if(!helpers.checkPhone(this.registerObj.telephone)){
+				Toast('请输入正确的手机号');
+				return;
+			}
+
+			// 校验密码
+			if(!helpers.checkPassword(this.registerObj.pwd)||!helpers.checkPassword(this.registerObj.repwd)){
+				Toast('请输入6-16位字母或数字密码');
+				return;
+			}
+
+			// 校验重复输入密码
+			if(this.registerObj.pwd!=this.registerObj.repwd){
+				Toast('请输入相同的确认密码');
+				return;
+			}
+
+			Indicator.open();
+			httpRequest({
+				url: "user/register",
+				params: this.registerObj,
+				success: (response) => {
+					MessageBox.alert('用户注册成功').then(action => {
+						window.history.go(-1);
+					});
+				},
+				complete: () => {
+					Indicator.close();
+				}
+			});
 		}
 	}
 }
