@@ -3,11 +3,12 @@
  * Created by qinmenghuan on 2017-08-25.
  */
 
-// import 'lib-flexible/flexible.js'
-// import Vue from 'vue'
-// import SocketPlugin from '../../common/webSocket.js';
-// Vue.use(SocketPlugin);
+
+import Vue from 'vue';
 import constants from '../../common/constants.js';
+import {Toast} from "mint-ui";
+import SocketPlugin from '../../common/webSocket.js';
+Vue.use(SocketPlugin);
 
 export default {
 	name: 'LoginCom',
@@ -15,11 +16,9 @@ export default {
 		return {
 			logoUrl: require('../../assets/wuziqi.jpg'),
 			gameName:constants.gameName,
-			socketMsg: {
-				type: "Login",
-				msg: "login request",
-				group: "",
-				user: ""
+			userdata: {
+				pwd: "123456",
+				telephone: "18672194345"
 			}
 		}
 	},
@@ -31,21 +30,34 @@ export default {
 		this.$myAddedProperty="2";
 
 		var self = this;
-		// 登录
-		window.websockObj = new WebSocket('ws://localhost:9876/gamelogin');
+
+		// window.websockObj = new WebSocket(constants.baseDomain+"login");
+		window.websockObj=this.$returnLoginSocket();
 		window.websockObj.onopen = function () {
-			// console.log("open123");
+			console.log("open成功");
+			// window.websockObj.send("openhello");
 		}
 		window.websockObj.onmessage = function (evt) {
-			if (evt.data) {
-				// 保存登录人信息
-				localStorage.setItem("currentUser", evt.data);
-				self.$router.replace("/gamers");
+			console.log(evt.data);
+			if(evt.data){
+				// debugger;
+				let responseData= JSON.parse(evt.data);
+				if (responseData.type=="Login") {
+					if(responseData.response_code=="200"){
+						// 登录成功
+					}else{
+						Toast(responseData.response_msg);
+					}
+				}
+				// 登陆12
+				else if (responseData.type=="Search"&&responseData.response_code=="200"){
+					self.$router.replace("/gamers");
+				}
 			}
-			console.log("loginmessage:", evt);
 		}
 		window.websockObj.onclose = function () {
 			console.log("客户端断开");
+			Toast("断开连接了，请重连");
 		};
 		window.websockObj.onerror = function (evt) {
 			console.log("报错");
@@ -54,8 +66,9 @@ export default {
 	methods: {
 		// 登录
 		login: function (event) {
-			console.log("startlogin");
-			window.websockObj.send(JSON.stringify(this.socketMsg));
+			// let socketObj= {type: "Login",	msg: "login request",telephone:"2341234"};
+			let socketObj= {type: "Login",	msg: "login request",data:this.userdata};
+			window.websockObj.send(JSON.stringify(socketObj));
 		}
 	}
 }

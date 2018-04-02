@@ -1,8 +1,13 @@
+/**
+ * 路由
+ * Created by qinmenghuan on 2017-08-25.
+ */
+
 import Vue from 'vue'
 import Router from 'vue-router'
 import GameHomeCom from '@/components/gameHome/GameHomeCom';
 import Login from '@/page/login/LoginCom';
-import Gamers from '@/components/gamers/GamersCom.vue';
+import Gamers from '@/page/gamers/GamersCom.vue';
 import Register from '@/page/register/RegisterCom';
 
 // 五子棋 开始

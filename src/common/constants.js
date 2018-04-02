@@ -5,11 +5,11 @@
 
 // 域名
 // var domain = "ws://localhost:9876/";
-var domain = "http://localhost:5000/";
+var domain = "localhost:5000/";
 
 export default {
 	baseDomain:"ws://"+domain,
-	httpDomain:domain,
+	httpDomain:"http://"+domain,
 	gameName:"FunnyGo"
 }
 
