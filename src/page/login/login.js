@@ -24,10 +24,6 @@ export default {
 	},
 	// 创建后login
 	created() {
-		console.log("value:",this.$myAddedProperty);
-		console.log("value2:",this.$myAddedMethod());
-		this.$myModifyMethod();
-		this.$myAddedProperty="2";
 
 		var self = this;
 
@@ -49,8 +45,9 @@ export default {
 						Toast(responseData.response_msg);
 					}
 				}
-				// 登陆12
+				// 登陆12f
 				else if (responseData.type=="Search"&&responseData.response_code=="200"){
+					localStorage.setItem('currentUser',self.userdata);
 					self.$router.replace("/gamers");
 				}
 			}
