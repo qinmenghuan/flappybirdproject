@@ -1,6 +1,5 @@
 <template>
     <div id="gamers">
-        <!--<header class="mainheader">在线人员</header>-->
         <mt-header title="在线">
         </mt-header>
         <ul class="userlist">

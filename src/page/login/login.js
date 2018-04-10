@@ -47,7 +47,7 @@ export default {
 				}
 				// 登陆12f
 				else if (responseData.type=="Search"&&responseData.response_code=="200"){
-					localStorage.setItem('currentUser',self.userdata);
+					localStorage.setItem('currentUser',JSON.stringify(self.userdata));
 					self.$router.replace("/gamers");
 				}
 			}
